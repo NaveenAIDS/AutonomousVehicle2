@@ -9,13 +9,14 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'master',
+                url: 'https://github.com/YOUR_USERNAME/AutonomousVehicle2.git'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean compile'
             }
         }
 
@@ -23,6 +24,22 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
+        }
+
+        stage('Package') {
+            steps {
+                bat 'mvn package'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Build Successful!'
+        }
+        failure {
+            echo 'Build Failed!'
         }
     }
 }
